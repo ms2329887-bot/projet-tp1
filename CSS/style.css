@@ -13,7 +13,7 @@
     box-sizing: border-box;
 }
 
-:root {
+ :root {
     /* Couleurs principales */
     --primary-color: #10b981;      
        --secondary-color: #3b82f6;   
