@@ -50,6 +50,20 @@
   --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.2);
   --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.3);
 }
+/* --- THÈME CLAIR --- */
+body .light-theme {
+  --bg-main: #ffffff;
+  --bg-secondary: #f8fafc;
+  --bg-light: #e2e8f0;
+  --text-primary: #0f172a;
+  --text-secondary: #334155;
+  --text-muted: #64748b;
+  --bot-message-bg: #3b82f6;
+  --user-message-bg: #8b5cf6;
+  --shadow-sm: 0 2 px 4 px rgba (0, 0, 0, 0.05);
+  --shadow-md: 0 4 px 6 px rgba (0, 0, 0, 0.1);
+  --shadow-lg: 0 10 px 15 px rgba (0, 0, 0, 0.15);
+}
 
 /* --- STYLES GÉNÉRAUX --- */
 body {
