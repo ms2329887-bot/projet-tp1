@@ -64,6 +64,18 @@ body .light-theme {
   --shadow-md: 0 4 px 6 px rgba (0, 0, 0, 0.1);
   --shadow-lg: 0 10 px 15 px rgba (0, 0, 0, 0.15);
 }
+/* --- TRANSITIONS GLOBALES POUR LE CHANGEMENT DE THÈME --- */
+body {
+  transition:
+    background-color 0.3 s ease,
+    color 0.3 s ease;
+}
+* {
+  transition:
+    background-color 0.3 s ease,
+    color 0.3 s ease,
+    border-color 0.3 s ease;
+}
 
 /* --- STYLES GÉNÉRAUX --- */
 body {
