@@ -1,0 +1,98 @@
+ {
+  "etablissement": "SMI",
+  "annee": "2024-2025",
+  "etudiants": [
+    {
+      "id": 1,
+      "nom": "Diop",
+      "prenom": "Amadou",
+      "age": 22,
+      "filiere": "Informatique",
+      "niveau": "Licence 3",
+      "photo": "👨‍💻",
+      "personnalite": {
+        "traits": ["créatif", "déterminé", "leader"],
+        "force": "résolution de problèmes",
+        "faiblesse": "perfectionnisme"
+      },
+      "funFacts": [
+        "A créé sa première app à 14 ans",
+        "Champion de hackathon 2023",
+        "Peut coder 12 heures d'affilée"
+      ],
+      "interets": ["IA", "blockchain", "football"],
+      "citation": "Le code est de la poésie pour les machines",
+      "statistiques": { "projetsRealises": 23, "cafeParJour": 4, "lignesDeCode": 75000 }
+    },
+    {
+      "id": 2,
+      "nom": "Sow",
+      "prenom": "Awa",
+      "age": 21,
+      "filiere": "Développement Web",
+      "niveau": "Licence 2",
+      "photo": "👩‍💻",
+      "personnalite": {
+        "traits": ["Curieuse", "Persévérante", "Calme"],
+        "force": "Logique implacable",
+        "faiblesse": "Oublie de manger quand elle code"
+      },
+      "funFacts": [
+        "A appris le HTML à 12 ans",
+        "Code mieux la nuit",
+        "Parle à son chat pour débugger"
+      ],
+      "interets": ["Intelligence Artificielle", "Yoga", "Lecture"],
+      "citation": "Le seul moyen de faire du bon travail est d'aimer ce que vous faites.",
+      "statistiques": { "projetsRealises": 12, "cafeParJour": 2, "lignesDeCode": 45000 }
+    },
+    {
+      "id": 3,
+      "nom": "Ndiaye",
+      "prenom": "Moussa",
+      "age": 23,
+      "filiere": "Cybersécurité",
+      "niveau": "Master 1",
+      "photo": "🛡️",
+      "personnalite": {
+        "traits": ["Analytique", "Méthodique", "Discret"],
+        "force": "Détecte les failles en un clin d'œil",
+        "faiblesse": "Change ses mots de passe tous les jours"
+      },
+      "funFacts": [
+        "A déjà retrouvé une clé perdue grâce à un script",
+        "Ne fait jamais confiance aux Wi-Fi publics",
+        "Collectionne les vieux claviers mécaniques"
+      ],
+      "interets": ["Cryptographie", "Échecs", "Séries de science-fiction"],
+      "citation": "La sécurité n'est pas un produit, mais un processus.",
+      "statistiques": { "projetsRealises": 8, "cafeParJour": 5, "lignesDeCode": 30000 }
+    },
+    {
+      "id": 4,
+      "nom": "Diop",
+      "prenom": "Ibrahima",
+      "age": 20,
+      "filiere": "Design Graphique",
+      "niveau": "Licence 1",
+      "photo": "🎨",
+      "personnalite": {
+        "traits": ["Créatif", "Sociable", "Énergique"],
+        "force": "Sens du détail visuel",
+        "faiblesse": "Passe 4 heures sur le choix d'une police"
+      },
+      "funFacts": [
+        "Voit le monde en code Hexadécimal",
+        "A dessiné le logo de trois startups",
+        "Déteste la couleur Comic Sans"
+      ],
+      "interets": ["Photographie", "UI/UX", "Basket-ball"],
+      "citation": "Le design n'est pas seulement ce à quoi ça ressemble, c'est comment ça fonctionne.",
+      "statistiques": { "projetsRealises": 15, "cafeParJour": 1, "lignesDeCode": 2000 }
+    }
+  ],
+  "stats": {
+    "totalEtudiants": 4,
+    "filieres": ["Informatique", "Développement Web", "Cybersécurité", "Design Graphique"]
+  }
+}
