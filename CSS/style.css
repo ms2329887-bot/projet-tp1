@@ -510,7 +510,9 @@ body {
 }
 
 @keyframes typing {
-  0%, 60%, 100% {
+  0%,
+  60%,
+  100% {
     transform: translateY(0);
     opacity: 0.7;
   }
@@ -552,4 +554,33 @@ body {
     transform: translateX(0);
   }
 }
-
+/* Animation bounce pour l'avatar */
+.message-avatar {
+  animation: bounceIn 0.5 s ease;
+}
+@keyframes bounceIn {
+  0% {
+    transform: scale (0);
+    opacity: 0;
+  }
+  50% {
+    transform: scale (1.2);
+  }
+  100% {
+    transform: scale (1);
+    opacity: 1;
+  }
+}
+.message-content {
+  animation: fadeInScale 0.3 s ease;
+}
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale (0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale (1);
+  }
+}
