@@ -317,7 +317,36 @@ body.dark-theme {
   display: flex;
   align-items: center;
   gap: var(--spacing-xs);
+  position: relative; 
+  overflow: hidden;
 }
+
+.send-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transition: left 0.5s ease;
+}
+
+.send-btn:hover::before {
+  left: 100%;
+}
+
+/* Animation lors de l'envoi */
+.send-btn.sending .btn-icon {
+  animation: spin 0.5s ease;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 
 .send-btn:hover {
   transform: translateY(-2px);
