@@ -584,3 +584,25 @@ body {
     transform: scale (1);
   }
 }
+/* Effet au survol des messages */
+.message {
+  position: relative;
+  transition: transform 0.3 s ease;
+}
+.message ::before {
+  content: "";
+  position: absolute;
+  inset: -2 px;
+  background: linear-gradient
+    (45 deg, var (--primary-color), var (--secondary-color));
+  border-radius: var (--radius-md);
+  opacity: 0;
+  z-index: -1;
+  transition: opacity 0.3 s ease;
+}
+.message :hover ::before {
+  opacity: 0.1;
+}
+.message :hover {
+  transform: translateY (-2 px);
+}
