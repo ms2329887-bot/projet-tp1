@@ -12,32 +12,46 @@ function initializeApp() {
   const modeButtons = document.querySelectorAll(".mode-btn");
 
   let currentMode = "naturel";
-  // ============================================
+    // ============================================
   // GESTION DU THÈME CLAIR/SOMBRE
   // ============================================
   const themeToggle = document.getElementById("theme-toggle");
-  // Charger le thème sauvegardé
+  const sunIcon = themeToggle.querySelector(".sun");
+  const moonIcon = themeToggle.querySelector(".moon");
+
+  // 1. Appliquer le thème sauvegardé au chargement
   const savedTheme = localStorage.getItem("chatbot-theme") || "dark";
   if (savedTheme === "light") {
     document.body.classList.add("light-theme");
+    if(sunIcon) sunIcon.style.display = "none";
+    if(moonIcon) moonIcon.style.display = "inline";
+  } else {
+    if(sunIcon) sunIcon.style.display = "inline";
+    if(moonIcon) moonIcon.style.display = "none";
   }
-  // Événement de clic sur le bouton
+
+  // 2. Événement de clic
   if (themeToggle) {
     themeToggle.addEventListener("click", function () {
-      document.body.classList.toggle("light-theme");
+      const isLightNow = document.body.classList.toggle("light-theme");
+      
       // Sauvegarder la préférence
-      const currentTheme = document.body.classList.contains("light-theme")
-        ? "light"
-        : "dark";
-      localStorage.setItem("chatbot-theme", currentTheme);
-      console.log(
-        `
-🎨 Thème changé :
-${currentTheme}
-`,
-      );
+      const newTheme = isLightNow ? "light" : "dark";
+      localStorage.setItem("chatbot-theme", newTheme);
+
+      // Changer l'icône visible
+      if (isLightNow) {
+        sunIcon.style.display = "none";
+        moonIcon.style.display = "inline";
+      } else {
+        sunIcon.style.display = "inline";
+        moonIcon.style.display = "none";
+      }
+
+      console.log(`🎨 Thème changé : ${newTheme}`);
     });
   }
+
 
   // Gestion des modes
   modeButtons.forEach((button) => {
@@ -75,11 +89,54 @@ ${currentTheme}
     addUserMessage(message);
     userInput.value = "";
 
-    setTimeout(() => {
-      const response = generateTemporaryResponse(message, currentMode);
-      addBotMessage(response);
-    }, 1000);
+   // Simuler la réflexion du bot
+showTypingIndicator();
+
+// Délai aléatoire entre 1 et 3 secondes
+const delay = Math.random() * 2000 + 1000;
+
+setTimeout(() => {
+    hideTypingIndicator();
+    const response = generateTemporaryResponse(message, currentMode);
+    addBotMessage(response);
+}, delay);
+
   }
+    // ============================================
+// TYPING INDICATOR
+// ============================================
+function showTypingIndicator() {
+  // Vérifier qu'il n'y a pas déjà un indicateur
+  if (document.getElementById('typing-indicator')) {
+    return;
+  }
+
+  const indicator = document.createElement('div');
+  indicator.className = 'message bot-message typing-indicator';
+  indicator.id = 'typing-indicator';
+
+  indicator.innerHTML = `
+    <div class="message-avatar">🤖</div>
+    <div class="message-content">
+      <div class="typing-dots">
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+      </div>
+    </div>
+  `;
+
+  chatContainer.appendChild(indicator);
+  scrollToBottom();
+}
+
+function hideTypingIndicator() {
+  const indicator = document.getElementById('typing-indicator');
+  if (indicator) {
+    indicator.remove();
+  }
+}
+
 
   function addUserMessage(text) {
     const messageDiv = document.createElement("div");
