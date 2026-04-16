@@ -85,6 +85,13 @@ function initializeApp() {
     console.log(`📤 Envoi du message : "${message}"`);
     console.log("Mode actuel:", currentMode);
     console.log("Nombre de messages:", chatContainer.children.length);
+    // Animation du bouton d'envoi
+     sendBtn.classList.add('sending');
+
+    setTimeout(() => {
+    sendBtn.classList.remove('sending');
+}, 500);
+
 
     addUserMessage(message);
     userInput.value = "";
