@@ -468,3 +468,55 @@ body .light-theme .theme-icon .moon {
   opacity: 0;
   transform: rotate (-180 deg) scale (0);
 }
+/* Animation de rotation au survol */
+#theme-toggle:hover .theme-icon {
+  display: inline-block; /* Nécessaire pour que transform fonctionne */
+  transform: rotate(360deg);
+  transition: transform 0.6s ease-in-out;
+}
+
+/* Optionnel : transition fluide pour le changement de couleur du site */
+body {
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
+}
+/* --- TYPING INDICATOR (Bot is typing...) --- */
+.typing-indicator .message-content {
+  background: var (--bot-message-bg);
+  padding: 12 px 16 px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4 px;
+}
+.typing-dots {
+  display: flex;
+  gap: 4 px;
+  align-items: center;
+}
+.typing-dots .dot {
+  width: 8 px;
+  height: 8 px;
+  background: var (--text-secondary);
+  border-radius: 50%;
+  animation: typing 1.4 s infinite;
+}
+.typing-dots .dot:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.typing-dots .dot:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes typing {
+  0%, 60%, 100% {
+    transform: translateY(0);
+    opacity: 0.7;
+  }
+  30% {
+    transform: translateY(-10px);
+    opacity: 1;
+  }
+}
+
