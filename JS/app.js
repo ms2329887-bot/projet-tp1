@@ -217,6 +217,9 @@ function initializeApp() {
         return div.innerHTML;
     }
 }
+     document.getElementById('theme-toggle').addEventListener('click', () => {
+       document.body.classList.toggle('dark-theme');
+   });
 
 // ============================================
 // 10. MESSAGES DE DEBUG DANS LA CONSOLE

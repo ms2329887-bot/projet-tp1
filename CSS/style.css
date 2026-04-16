@@ -61,6 +61,11 @@ body {
     display: flex;
     flex-direction: column;
 }
+ body.dark-theme {
+       --bg-main: #000000;
+       --bg-secondary: #1a1a1a;
+       --text-primary: #ffffff;
+   }
 
 /* --- HEADER --- */
 .app-header {
