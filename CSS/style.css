@@ -292,21 +292,22 @@ body.dark-theme {
 
 .user-input:focus {
   .user-input:focus {
-  outline: none;
-  border-color: var(--primary-color);
-  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2), 0 4px 6px rgba(0, 0, 0, 0.1);
-  transform: translateY(-2px);
-}
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow:
+      0 0 0 3px rgba(99, 102, 241, 0.2),
+      0 4px 6px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+  }
 
-.user-input::placeholder {
-  transition: all 0.3s ease;
-}
+  .user-input::placeholder {
+    transition: all 0.3s ease;
+  }
 
-.user-input:focus::placeholder {
-  opacity: 0.5;
-  transform: translateX(10px);
-}
-
+  .user-input:focus::placeholder {
+    opacity: 0.5;
+    transform: translateX(10px);
+  }
 }
 
 .user-input::placeholder {
@@ -330,18 +331,23 @@ body.dark-theme {
   display: flex;
   align-items: center;
   gap: var(--spacing-xs);
-  position: relative; 
+  position: relative;
   overflow: hidden;
 }
 
 .send-btn::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.3),
+    transparent
+  );
   transition: left 0.5s ease;
 }
 
@@ -359,7 +365,6 @@ body.dark-theme {
     transform: rotate(360deg);
   }
 }
-
 
 .send-btn:hover {
   transform: translateY(-2px);
@@ -408,7 +413,39 @@ body.dark-theme {
   .mode-btn {
     font-size: 0.8rem;
     padding: var(--spacing-xs);
+    position: relative;
+    overflow: hidden;
   }
+  .mode-btn::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s ease, height 0.6s ease;
+}
+
+.mode-btn:hover::before {
+  width: 300px;
+  height: 300px;
+}
+.mode-btn.active {
+  animation: pulse 2s ease infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.7);
+  }
+  50% {
+    box-shadow: 0 0 0 10px rgba(99, 102, 241, 0);
+  }
+}
+
 
   .message-content {
     max-width: 85%;
