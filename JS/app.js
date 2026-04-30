@@ -3,19 +3,25 @@ document.addEventListener("DOMContentLoaded", function () {
   initializeApp();
 });
 
+// ============================================
+// INITIALISATION
+// ============================================
+// ℹ️ interpreterQuestion est définie dans ai.js
+//    (chargé avant app.js dans le HTML)
 
 function initializeApp() {
   console.log("🚀 Initialisation du chatbot...");
+
   // ============================================
-    // CHARGEMENT DES DONNÉES
-    // ============================================
-    chargerDonneesEtudiants().then(data => {
-        if (data) {
-            addBotMessage(`Données chargées ! Je connais ${data.etudiants.length} étudiants de ${data.etablissement} ! 🎓`);
-        } else {
-            addBotMessage("⚠️ Impossible de charger les données. Certaines fonctionnalités seront limitées.");
-        }
-    });
+  // CHARGEMENT DES DONNÉES
+  // ============================================
+  chargerDonneesEtudiants().then(data => {
+    if (data) {
+      addBotMessage(`Données chargées ! Je connais ${data.etudiants.length} étudiants de ${data.etablissement} ! 🎓`);
+    } else {
+      addBotMessage("⚠️ Impossible de charger les données. Certaines fonctionnalités seront limitées.");
+    }
+  });
 
   const userInput = document.getElementById("user-input");
   const sendBtn = document.getElementById("send-btn");
@@ -23,48 +29,48 @@ function initializeApp() {
   const modeButtons = document.querySelectorAll(".mode-btn");
 
   let currentMode = "naturel";
-    // ============================================
+
+  // ============================================
   // GESTION DU THÈME CLAIR/SOMBRE
   // ============================================
   const themeToggle = document.getElementById("theme-toggle");
   const sunIcon = themeToggle.querySelector(".sun");
   const moonIcon = themeToggle.querySelector(".moon");
 
-  // 1. Appliquer le thème sauvegardé au chargement
+  // Appliquer le thème sauvegardé au chargement
   const savedTheme = localStorage.getItem("chatbot-theme") || "dark";
   if (savedTheme === "light") {
     document.body.classList.add("light-theme");
-    if(sunIcon) sunIcon.style.display = "none";
-    if(moonIcon) moonIcon.style.display = "inline";
+    if (sunIcon) sunIcon.style.display = "none";
+    if (moonIcon) moonIcon.style.display = "inline";
   } else {
-    if(sunIcon) sunIcon.style.display = "inline";
-    if(moonIcon) moonIcon.style.display = "none";
+    if (sunIcon) sunIcon.style.display = "inline";
+    if (moonIcon) moonIcon.style.display = "none";
   }
 
-  // 2. Événement de clic
+  // Événement de clic (une seule fois)
   if (themeToggle) {
     themeToggle.addEventListener("click", function () {
       const isLightNow = document.body.classList.toggle("light-theme");
-      
-      // Sauvegarder la préférence
+
       const newTheme = isLightNow ? "light" : "dark";
       localStorage.setItem("chatbot-theme", newTheme);
 
-      // Changer l'icône visible
       if (isLightNow) {
-        sunIcon.style.display = "none";
-        moonIcon.style.display = "inline";
+        if (sunIcon) sunIcon.style.display = "none";
+        if (moonIcon) moonIcon.style.display = "inline";
       } else {
-        sunIcon.style.display = "inline";
-        moonIcon.style.display = "none";
+        if (sunIcon) sunIcon.style.display = "inline";
+        if (moonIcon) moonIcon.style.display = "none";
       }
 
       console.log(`🎨 Thème changé : ${newTheme}`);
     });
   }
 
-
-  // Gestion des modes
+  // ============================================
+  // GESTION DES MODES
+  // ============================================
   modeButtons.forEach((button) => {
     button.addEventListener("click", function () {
       modeButtons.forEach((btn) => btn.classList.remove("active"));
@@ -75,7 +81,9 @@ function initializeApp() {
     });
   });
 
-  // Événements d'envoi
+  // ============================================
+  // ÉVÉNEMENTS D'ENVOI
+  // ============================================
   sendBtn.addEventListener("click", function () {
     sendMessage();
   });
@@ -84,85 +92,76 @@ function initializeApp() {
     if (e.key === "Enter") sendMessage();
   });
 
-  // ✅ Une seule déclaration de sendMessage()
+  // ============================================
+  // ENVOI DU MESSAGE
+  // ============================================
   function sendMessage() {
     const message = userInput.value.trim();
 
-    if (message === "") {
-      console.log("⚠️ Message vide, rien à envoyer");
+    if (message === '') {
+      userInput.classList.add('shake');
+      setTimeout(() => userInput.classList.remove('shake'), 500);
       return;
     }
 
-    console.log(`📤 Envoi du message : "${message}"`);
-    console.log("Mode actuel:", currentMode);
-    console.log("Nombre de messages:", chatContainer.children.length);
-    // Animation du bouton d'envoi
-     sendBtn.classList.add('sending');
+    console.log(`📤 Message: "${message}" en mode ${currentMode}`);
 
-    setTimeout(() => {
-    sendBtn.classList.remove('sending');
-}, 500);
-
+    sendBtn.classList.add('sending');
+    setTimeout(() => sendBtn.classList.remove('sending'), 500);
 
     addUserMessage(message);
-    userInput.value = "";
+    userInput.value = '';
 
-   // Simuler la réflexion du bot
-showTypingIndicator();
+    showTypingIndicator();
 
-// Délai aléatoire entre 1 et 3 secondes
-const delay = Math.random() * 2000 + 1000;
-
-setTimeout(() => {
-    hideTypingIndicator();
-    const response = generateTemporaryResponse(message, currentMode);
-    addBotMessage(response);
-}, delay);
-
-  }
-    // ============================================
-// TYPING INDICATOR
-// ============================================
-function showTypingIndicator() {
-  // Vérifier qu'il n'y a pas déjà un indicateur
-  if (document.getElementById('typing-indicator')) {
-    return;
+    generateResponse(message, currentMode).then(response => {
+      hideTypingIndicator();
+      addBotMessage(response);
+    }).catch(error => {
+      hideTypingIndicator();
+      addBotMessage("Oups, une erreur s'est produite ! 😅");
+      console.error('Erreur:', error);
+    });
   }
 
-  const indicator = document.createElement('div');
-  indicator.className = 'message bot-message typing-indicator';
-  indicator.id = 'typing-indicator';
+  // ============================================
+  // TYPING INDICATOR
+  // ============================================
+  function showTypingIndicator() {
+    if (document.getElementById('typing-indicator')) return;
 
-  indicator.innerHTML = `
-    <div class="message-avatar">🤖</div>
-    <div class="message-content">
-      <div class="typing-dots">
-        <span class="dot"></span>
-        <span class="dot"></span>
-        <span class="dot"></span>
+    const indicator = document.createElement('div');
+    indicator.className = 'message bot-message typing-indicator';
+    indicator.id = 'typing-indicator';
+    indicator.innerHTML = `
+      <div class="message-avatar">🤖</div>
+      <div class="message-content">
+        <div class="typing-dots">
+          <span class="dot"></span>
+          <span class="dot"></span>
+          <span class="dot"></span>
+        </div>
       </div>
-    </div>
-  `;
-
-  chatContainer.appendChild(indicator);
-  scrollToBottom();
-}
-
-function hideTypingIndicator() {
-  const indicator = document.getElementById('typing-indicator');
-  if (indicator) {
-    indicator.remove();
+    `;
+    chatContainer.appendChild(indicator);
+    scrollToBottom();
   }
-}
 
+  function hideTypingIndicator() {
+    const indicator = document.getElementById('typing-indicator');
+    if (indicator) indicator.remove();
+  }
 
+  // ============================================
+  // AFFICHAGE DES MESSAGES
+  // ============================================
   function addUserMessage(text) {
     const messageDiv = document.createElement("div");
     messageDiv.className = "message user-message";
     messageDiv.innerHTML = `
-            <div class="message-avatar">👤</div>
-            <div class="message-content"><p>${escapeHtml(text)}</p></div>
-        `;
+      <div class="message-avatar">👤</div>
+      <div class="message-content"><p>${escapeHtml(text)}</p></div>
+    `;
     chatContainer.appendChild(messageDiv);
     scrollToBottom();
   }
@@ -171,82 +170,74 @@ function hideTypingIndicator() {
     const messageDiv = document.createElement("div");
     messageDiv.className = "message bot-message";
     messageDiv.innerHTML = `
-            <div class="message-avatar">🤖</div>
-            <div class="message-content"><p>${escapeHtml(text)}</p></div>
-        `;
+      <div class="message-avatar">🤖</div>
+      <div class="message-content"><p>${escapeHtml(text)}</p></div>
+    `;
     chatContainer.appendChild(messageDiv);
     scrollToBottom();
 
-    // ✅ Log déplacé ici, dans un contexte valide
-    console.log(
-      "Nombre de messages:",
-      document.querySelectorAll(".message").length,
-    );
+    console.log("Nombre de messages:", document.querySelectorAll(".message").length);
   }
 
-  function generateTemporaryResponse(userMessage, mode) {
-    // ✅ msg est bien déclaré ici
+  // ============================================
+  // GÉNÉRATION DE RÉPONSES
+  // ============================================
+  async function generateResponse(userMessage, mode) {
+    if (!donneesChargees()) {
+      return "Les données ne sont pas encore chargées. Patiente... 🔄";
+    }
+
+    const intent = interpreterQuestion(userMessage);
+
+    if (intent.type === 'statistiques') {
+      const stats = studentsData.stats;
+      return `📊 Statistiques :\n\n` +
+        `👥 Total : ${stats.totalEtudiants} étudiants\n` +
+        `🎓 Filières : ${stats.filieres.length}\n` +
+        `📦 Projets : ${stats.totalProjets}\n` +
+        `☕ Cafés/jour : ${stats.totalCafes}`;
+    }
+
+    if (intent.type === 'liste') {
+      const liste = studentsData.etudiants
+        .map(e => `• ${e.prenom} ${e.nom} (${e.filiere})`)
+        .join('\n');
+      return `📋 Liste des étudiants :\n\n${liste}`;
+    }
+
+    try {
+    return await genererReponseAvecCache(userMessage, mode);
+    } catch (error) {
+      return generateTemporaryResponseFallback(userMessage, mode, intent);
+    }
+  }
+
+  // ============================================
+  // FALLBACK SANS IA
+  // ============================================
+  function generateTemporaryResponseFallback(userMessage, mode, intent) {
     const msg = userMessage.toLowerCase();
 
-    const responses = {
-      naturel: [
-        "Hmm, intéressante question ! Pour l'instant je suis en mode apprentissage. 😊",
-        "Je note ça ! Bientôt je pourrai te répondre avec l'IA. 🤖",
-        "Super question ! J'apprends encore comment y répondre. 📚",
-      ],
-      roast: [
-        "Oh là là, cette question... 🔥 Donne-moi le temps de préparer une réponse qui arrache !",
-        "Tu veux vraiment que je roast avec ça ? Attends le Module 4, ça va chauffer ! 😈",
-        "Pas mal comme question, mais j'ai besoin de mon cerveau IA d'abord ! 💀",
-      ],
-      sympathique: [
-        "Quelle belle question ! 💖 Je suis impatient d'y répondre quand j'aurai mon IA !",
-        "Tu es trop gentil(le) de me poser cette question ! 🥰 Bientôt je pourrai t'aider !",
-        "Aww, j'aimerais tellement pouvoir répondre ! 💕 Patience, ça arrive !",
-      ],
-      philosophique: [
-        "Hmm... La connaissance est-elle vraiment accessible ? 🤔",
-        "Comme disait Socrate : 'Je sais que je ne sais rien'... 📚",
-        "Mais qu'est-ce qu'une question, sinon une quête de sens ? 🧘",
-      ],
-    };
-
-    if (
-      msg.includes("salut") ||
-      msg.includes("bonjour") ||
-      msg.includes("hello")
-    ) {
-      return mode === "roast"
-        ? "Salut toi ! Prêt(e) à te faire roast ? 🔥"
-        : mode === "sympathique"
-          ? "Coucou ! 💖 Quel plaisir de te parler !"
-          : "Salut ! Comment puis-je t'aider ? 😊";
+    if (msg.includes('salut') || msg.includes('bonjour')) {
+      return mode === 'roast'
+        ? "Tiens, regarde qui arrive ! 🔥"
+        : "Salut ! Que veux-tu savoir ? 😊";
     }
 
-    if (msg.includes("merci") || msg.includes("thanks")) {
-      return mode === "roast"
-        ? "Ouais ouais, de rien... 😏"
-        : mode === "sympathique"
-          ? "Avec grand plaisir ! Tu es adorable ! 🥰"
-          : "De rien, ravi d'aider ! 😊";
+    if (intent.type === 'presentation' && intent.nom) {
+      const etudiants = rechercherEtudiant(intent.nom);
+      if (etudiants.length > 0) {
+        return presenterEtudiant(etudiants[0], mode);
+      }
+      return `Je ne connais pas ${intent.nom} 🤔`;
     }
 
-    if (msg.includes("qui es-tu") || msg.includes("qui es tu")) {
-      return `Je suis un chatbot en mode ${mode} ! 🤖 En cours de développement dans le Module 1.`;
-    }
-
-    const modeResponses = responses[mode] || responses.naturel;
-    return modeResponses[Math.floor(Math.random() * modeResponses.length)];
+    return "Hmm, je n'ai pas bien compris. Reformule ta question ! 🤔";
   }
 
-  function showTypingIndicator() {
-    const indicator = document.createElement("div");
-    indicator.className = "typing-indicator";
-    indicator.innerHTML = "<span></span><span></span><span></span>";
-    chatContainer.appendChild(indicator);
-    setTimeout(() => indicator.remove(), 2000);
-  }
-
+  // ============================================
+  // UTILITAIRES
+  // ============================================
   function scrollToBottom() {
     chatContainer.scrollTop = chatContainer.scrollHeight;
   }
@@ -256,11 +247,6 @@ function hideTypingIndicator() {
     div.textContent = text;
     return div.innerHTML;
   }
-
-  // ✅ theme-toggle à l'intérieur, après que le DOM est prêt
-  document.getElementById("theme-toggle").addEventListener("click", () => {
-    document.body.classList.toggle("dark-theme");
-  });
 }
 
 console.log(`
@@ -270,6 +256,4 @@ console.log(`
 ║   HTML, CSS et JavaScript !          ║
 ╚═══════════════════════════════════════╝
 `);
-console.log(
-  "💡 Astuce : Ouvre la console (F12) pour voir les logs de débogage !",
-);
+console.log("💡 Astuce : Ouvre la console (F12) pour voir les logs de débogage !");
