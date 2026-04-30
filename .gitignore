@@ -1,0 +1,10 @@
+ Configuration (contient les clés API)
+js/config.js
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
